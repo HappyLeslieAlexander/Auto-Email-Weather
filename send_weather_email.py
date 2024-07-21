@@ -71,10 +71,12 @@ def send_email(subject, body):
         server.send_message(message)
 
 def main():
+    # 获取当前 UTC+8 时间
+    utc8_now = datetime.now(timezone.utc) + timedelta(hours=8)
     greeting = "早上好！\n\n这是今天的天气报告：\n\n"
     weather_report = get_weather()
     body = greeting + weather_report
-    subject = f'每日天气报告 - {datetime.now().strftime("%Y-%m-%d")}'
+    subject = f'每日天气报告 - {utc8_now.strftime("%Y-%m-%d")}'
     send_email(subject, body)
 
 if __name__ == "__main__":
