@@ -8,7 +8,7 @@ from datetime import datetime
 
 # 获取环境变量
 SMTP_SERVER = os.getenv('SMTP_SERVER')
-SMTP_PORT = int(os.getenv('SMTP_PORT'))
+SMTP_PORT = int(os.getenv('SMTP_PORT'))  # 使用端口 587 进行 STARTTLS
 SMTP_USER = os.getenv('SMTP_USER')
 SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')
 EMAIL_FROM = os.getenv('EMAIL_FROM')
@@ -38,8 +38,8 @@ def send_email(subject, body):
 
     message.attach(MIMEText(body, 'plain'))
 
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, context=context) as server:
+    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+        server.starttls(context=ssl.create_default_context())
         server.login(SMTP_USER, SMTP_PASSWORD)
         server.send_message(message)
 
