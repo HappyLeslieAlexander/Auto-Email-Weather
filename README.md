@@ -144,4 +144,4 @@ TON
 UQC4r4gxAIbOTEEZGG-C1Ffn9inRo24J7qw3U0dFfaIfKyFr
 
 ### 感谢你右上角的star🌟
-[![Stargazers over time](https://starchart.cc/HappyLeslieAlexander/Cloudflare_VLESS.svg)](https://starchart.cc/HappyLeslieAlexander/Cloudflare_VLESS)
+[![Stargazers over time](https://starchart.cc/HappyLeslieAlexander/Cloudflare_VLESS.svg)](https://starchart.cc/HappyLeslieAlexander/Auto-Email-Weather)
