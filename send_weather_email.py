@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import requests
 import os
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 # 获取环境变量
 SMTP_SERVER = os.getenv('SMTP_SERVER')
@@ -25,9 +25,36 @@ def get_weather():
     if response.status_code == 200:
         weather_description = data['weather'][0]['description']
         temperature = data['main']['temp']
-        return f'天气: {weather_description}\n温度: {temperature}°C'
+        temp_min = data['main']['temp_min']
+        temp_max = data['main']['temp_max']
+        humidity = data['main']['humidity']
+        wind_speed = data['wind']['speed']
+        wind_deg = data['wind']['deg']
+        sunrise = datetime.fromtimestamp(data['sys']['sunrise'], tz=timezone.utc).astimezone(timezone(timedelta(hours=8))).strftime('%H:%M:%S')
+        sunset = datetime.fromtimestamp(data['sys']['sunset'], tz=timezone.utc).astimezone(timezone(timedelta(hours=8))).strftime('%H:%M:%S')
+
+        wind_direction = convert_deg_to_direction(wind_deg)
+        
+        weather_report = (
+            f"天气: {weather_description}\n"
+            f"温度: {temperature}°C\n"
+            f"最高温度: {temp_max}°C\n"
+            f"最低温度: {temp_min}°C\n"
+            f"湿度: {humidity}%\n"
+            f"风速: {wind_speed} m/s\n"
+            f"风向: {wind_direction} ({wind_deg}°)\n"
+            f"日出时间: {sunrise}\n"
+            f"日落时间: {sunset}"
+        )
+        return weather_report
     else:
         return f"获取天气信息失败: {data.get('message', '未知错误')}"
+
+def convert_deg_to_direction(deg):
+    """将风向从度数转换为方向"""
+    directions = ['北', '北东北', '东北', '东东北', '东', '东东南', '东南', '南东南', '南', '南西南', '西南', '西西南', '西', '西西北', '西北', '北西北']
+    ix = round(deg / 22.5) % 16
+    return directions[ix]
 
 def send_email(subject, body):
     """通过 SMTP 发送电子邮件"""
