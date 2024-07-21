@@ -18,7 +18,9 @@ WEATHER_CITY = os.getenv('WEATHER_CITY')
 
 def get_weather():
     """获取天气信息"""
-    response = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={WEATHER_CITY}&appid={WEATHER_API_KEY}&units=metric&lang=zh_cn')
+    response = requests.get(
+        f'https://api.openweathermap.org/data/2.5/weather?q={WEATHER_CITY}&appid={WEATHER_API_KEY}&units=metric&lang=zh_cn'
+    )
     data = response.json()
     if response.status_code == 200:
         weather_description = data['weather'][0]['description']
